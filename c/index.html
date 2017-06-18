@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Rust to WebAssembly example</title>
+</head>
+<body>
+<script>
+var importObject = {
+  env: {
+    memoryBase: 0,
+    tableBase: 0,
+    memory: new WebAssembly.Memory({ initial: 256, maximum: 256 }),
+    table: new WebAssembly.Table({ initial: 0, element: 'anyfunc', maximum: 0 })
+  }
+};
+
+function instantiate(bytes, imports) {
+  return WebAssembly.
+    compile(bytes).
+    then(m => WebAssembly.instantiate(m, importObject));
+}
+
+fetch('./a.out.wasm').then(response => response.arrayBuffer())
+.then(bytes => instantiate(bytes, importObject))
+.then(instance => console.log(instance.exports._add(10, 10)));
+</script>
+</body>
+</html>

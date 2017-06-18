@@ -13,6 +13,9 @@ ENV PATH="/emsdk_portable/binaryen/master_64bit_binaryen/bin/:/root/.cargo/bin:$
 
 RUN rustup target add wasm32-unknown-emscripten
 
+RUN mkdir -p /root/.emscripten_ports/binaryen/ && \
+ ln -s /emsdk_portable/binaryen/master_64bit_binaryen /root/.emscripten_ports/binaryen/binaryen-version_28
+
 ENV USER root
 
 WORKDIR /work
