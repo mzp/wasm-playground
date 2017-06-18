@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Rust to WebAssembly example</title>
+</head>
+<body>
+<script>
+var importObject = {
+  env: {
+    DYNAMICTOP_PTR: 0,
+    STACKTOP: 0,
+    STACK_MAX: 0,
+    abort: function () {},
+    enlargeMemory: function () {},
+    getTotalMemory: function () {},
+    abortOnCannotGrowMemory: function () {},
+    invoke_iiii: function () {},
+    invoke_i: function () {},
+    invoke_vi: function () {},
+    invoke_vii: function () {},
+    invoke_ii: function () {},
+    invoke_v: function () {},
+    invoke_viiii: function () {},
+    invoke_iii: function () {},
+    invoke_viii: function () {},
+    _pthread_cleanup_pop: function () {},
+    _pthread_cond_wait: function () {},
+    _pthread_key_create: function () {},
+    __Unwind_FindEnclosingFunction: function () {},
+    ___gxx_personality_v0: function () {},
+    _pthread_rwlock_unlock: function () {},
+    ___cxa_find_matching_catch_2: function () {},
+    _pthread_cond_init: function () {},
+    __Unwind_GetIPInfo: function () {},
+    _pthread_mutexattr_destroy: function () {},
+    ___setErrNo: function () {},
+    ___cxa_free_exception: function () {},
+    _pthread_key_delete: function () {},
+    ___cxa_allocate_exception: function () {},
+    _emscripten_memcpy_big: function () {},
+    ___resumeException: function () {},
+    _pthread_condattr_setclock: function () {},
+    _pthread_getspecific: function () {},
+    ___cxa_find_matching_catch_3: function () {},
+    _pthread_rwlock_rdlock: function () {},
+    _pthread_cond_signal: function () {},
+    _pthread_mutex_destroy: function () {},
+    _abort: function () {},
+    _pthread_condattr_init: function () {},
+    _pthread_mutexattr_settype: function () {},
+    _getenv: function () {},
+    _pthread_condattr_destroy: function () {},
+    ___syscall54: function () {},
+    ___unlock: function () {},
+    ___syscall140: function () {},
+    _pthread_mutexattr_init: function () {},
+    _pthread_setspecific: function () {},
+    _dladdr: function () {},
+    ___cxa_throw: function () {},
+    ___lock: function () {},
+    ___syscall6: function () {},
+    _pthread_cleanup_push: function () {},
+    ___syscall4: function () {},
+    _pthread_cond_destroy: function () {},
+    _llvm_trap: function () {},
+    _pthread_mutex_init: function () {},
+    __Unwind_Backtrace: function () {},
+    ___syscall146: function () {},
+    ___gxx_personality_v0: function () {},
+    memoryBase: 0,
+    tableBase: 0,
+    memory: new WebAssembly.Memory({ initial: 256, maximum: 256 }),
+    table: new WebAssembly.Table({ initial: 8, element: 'anyfunc', maximum: 8 })
+  }
+};
+
+function instantiate(bytes, imports) {
+  return WebAssembly.
+    compile(bytes).
+    then(m => WebAssembly.instantiate(m, importObject));
+}
+
+fetch('./add.wasm').then(response => response.arrayBuffer())
+.then(bytes => instantiate(bytes, importObject))
+.then(instance => console.log(instance.exports._add(10, 10)));
+</script>
+</body>
+</html>
